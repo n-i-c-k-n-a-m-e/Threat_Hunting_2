@@ -4,7 +4,7 @@
 
 ## Цель работы
 
-Научиться пользоваться RStudio, решить задачи из swirl
+Научиться пользоваться RStudio, изучить язык R, решить задачи из swirl
 
 ## Ход работы
 
@@ -258,9 +258,9 @@ file.info("mytest.R")
 ```
 
              size isdir mode               mtime               ctime
-    mytest.R    0 FALSE  666 2023-09-21 16:42:21 2023-09-21 16:42:21
+    mytest.R    0 FALSE  666 2023-09-21 16:45:20 2023-09-21 16:45:20
                            atime exe
-    mytest.R 2023-09-21 16:42:21  no
+    mytest.R 2023-09-21 16:45:20  no
 
 ### Change the name of the file “mytest.R” to “mytest2.R” by using file.rename().
 
@@ -550,3 +550,7 @@ paste(LETTERS, 1:4, sep ="-")
      [1] "A-1" "B-2" "C-3" "D-4" "E-1" "F-2" "G-3" "H-4" "I-1" "J-2" "K-3" "L-4"
     [13] "M-1" "N-2" "O-3" "P-4" "Q-1" "R-2" "S-3" "T-4" "U-1" "V-2" "W-3" "X-4"
     [25] "Y-1" "Z-2"
+
+##Вывод
+
+Научился основам языка R, освоил базовые функции языка
