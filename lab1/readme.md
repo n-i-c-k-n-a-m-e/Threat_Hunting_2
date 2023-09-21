@@ -88,7 +88,7 @@ z * 2 + 100
 my_sqrt <- sqrt(z-1)
 ```
 
-###Print the contents of my_sqrt
+### Print the contents of my_sqrt
 
 ``` r
 my_sqrt
@@ -145,12 +145,7 @@ z * 2 + 1000
 
     [1] 1002.20 1018.00 1006.28
 
-###You can type the first two letters of the variable name, then hit the
-Tab key (possibly more than once). Most programming environments will
-provide a list of variables that you’ve created that begin with ‘my’.
-This is called auto-completion and can be quite handy when you have many
-variables in your workspace. Give it a try. (If auto-completion doesn’t
-work for you, just type my_div and press Enter.)
+### You can type the first two letters of the variable name, then hit the Tab key (possibly more than once). Most programming environments will provide a list of variables that you’ve created that begin with ‘my’. This is called auto-completion and can be quite handy when you have many variables in your workspace. Give it a try. (If auto-completion doesn’t work for you, just type my_div and press Enter.)
 
 ``` r
 my_div
