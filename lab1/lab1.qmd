@@ -65,7 +65,7 @@ z * 2 + 100
 ```{r}
 my_sqrt <- sqrt(z-1)
 ```
-###Print the contents of my_sqrt
+### Print the contents of my_sqrt
 ```{r}
 my_sqrt
 
