@@ -1,0 +1,183 @@
+---
+title: "Лабораторная работа №2"
+author: Шабанов Р.В.
+format:
+    md:
+        output-file: readme.md
+    
+editor: visual
+---
+
+## Цель Работы
+
+1.  Зекрепить практические навыки использования языка программирования R для обработки данных
+2.  Закрепить знания основных функций обработки данных экосистемы tidyverse языка R
+3.  Развить пркатические навыки использования функций обработки данных пакета dplyr -- функции select(), filter(), mutate(), arrange(), group_by()
+
+## Ход работы
+
+## Задание 1
+
+### Узнать сколько втроенных в пакет nycflights13 датафреймов
+
+
+##nycflights13::
+
+
+### Можно увидеть, что всего 5 датафреймов
+
+## Задание 2
+
+### Узнать сколько строк в каждом датафрейме
+
+```{r}
+library('nycflights13')
+library('dplyr')
+glimpse(nycflights13::airlines)
+glimpse(nycflights13::airports)
+glimpse(nycflights13::flights)
+glimpse(nycflights13::planes)
+glimpse(nycflights13::weather)
+```
+
+### Итого:
+
+### В пакете Airlines - 16 строк
+
+### В пакете Airports - 1458 строк
+
+### В пакете Flights - 336776 строк
+
+### В пакете Planes - 3322 строк
+
+### В пакете Weather - 26115 строк
+
+## Задание 3
+
+### Узнать сколько столбцов в каждом датафрейме
+
+```{r}
+glimpse(nycflights13::airlines)
+glimpse(nycflights13::airports)
+glimpse(nycflights13::flights)
+glimpse(nycflights13::planes)
+glimpse(nycflights13::weather)
+```
+
+### Итого:
+
+### В пакете Airlines - 2 столбцов
+
+### В пакете Airports - 8 столбцов
+
+### В пакете Flights - 19 столбцов
+
+### В пакете Planes - 9 столбцов
+
+### В пакете Weather - 15 столбцов
+
+## Задание 4
+
+### Как просмотреть примерный вид датафрейма?
+
+### glimpse(nycflights13::название датафрейма)
+
+## Задание 5
+
+### Сколько компаний-перевозчиков (carrier) учитывают эти наборы данных (представлено в наборах данных)?
+
+```{r}
+nycflights13::airlines$carrier
+```
+
+### Ответ - 16
+
+## Задание 6
+
+### Сколько рейсов принял аэропорт John F Kennedy Intl в мае?
+
+```{r}
+print(n = 10000, filter(flights, month == 5 & origin == 'JFK'))
+```
+
+### Ответ - 9397
+
+## Задание 7
+
+### Какой самый северный аэропорт?
+
+
+
+## Задание 8
+
+### Какой аэропорт самый высокогорный (находится выше всех над уровнем моря)?
+
+```{r}
+a <- filter(weather, pressure != 'NA')
+b <- max(a$pressure)
+c <- filter(weather, pressure == b)
+d <- select(c,origin)
+d
+```
+
+Ответ: Аэропорт John F Kennedy Intl
+
+## Задание 9
+
+### Какие бортовые номера у самых старых самолетов?
+
+```{r}
+a <- filter(planes, year != 'NA')
+b <- min(a$year)
+c <- filter(planes, year == b)
+select (c, tailnum)
+```
+
+### Ответ: Бортовой номер самого старого самолета - N381AA
+
+## Задание 10
+
+### Какая средняя температура воздуха была в сентябре в аэропорту John F Kennedy Intl (в градусах Цельсия)?
+
+```{r}
+a <- filter(weather, month == 9 , origin == 'JFK', temp != 'NA')
+b <- summarize(a, delay = mean(temp, na.rm = TRUE ))
+c <- 5/9*(b-32)
+c
+```
+
+### Ответ: 19.38764
+
+## Задание 11
+
+### Самолеты какой авиакомпании совершили больше всего вылетов в июне?
+
+```{r}
+a <- filter(flights, month == 6, carrier != 'NA', month != 'NA')
+b <- group_by(a, carrier)
+c <- count(b, carrier)
+d <- filter(c, n == max(c$n))
+f <- filter(airlines, carrier == d$carrier)
+f
+```
+
+### Ответ: Аваикомпании United Air Lines Inc.
+
+## Задание 12
+
+### Самолеты какой авиакомпании задерживались чаще других в 2013 году?
+
+```{r}
+a <- filter(flights, year == 2013, dep_delay != 'NA', dep_delay > 0)
+b <- group_by(a,carrier)
+c <- count(b,carrier)
+d <- filter(c, n == max(c$n))
+f <- filter(airlines, carrier == d$carrier)
+f
+```
+
+### Ответ: Аваикомпании United Air Lines Inc.
+
+## Вывод
+
+Научился пользоваться на практике функциями обработки данных пакета dplyr
