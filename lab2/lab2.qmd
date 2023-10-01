@@ -97,7 +97,8 @@ nycflights13::airlines$carrier
 ### Сколько рейсов принял аэропорт John F Kennedy Intl в мае?
 
 ```{r}
-print(n = 10000, filter(flights, month == 5 & origin == 'JFK'))
+z <- filter(flights, month == 5 & origin == 'JFK')
+count(z)
 ```
 
 ### Ответ - 9397
