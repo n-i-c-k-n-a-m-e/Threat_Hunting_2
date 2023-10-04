@@ -33,11 +33,11 @@ editor: visual
 ```{r}
 library('nycflights13')
 library('dplyr')
-glimpse(nycflights13::airlines)
-glimpse(nycflights13::airports)
-glimpse(nycflights13::flights)
-glimpse(nycflights13::planes)
-glimpse(nycflights13::weather)
+nycflights13::airlanes %>% nrow()
+nycflights13::airports %>% nrow()
+nycflights13::flights %>% nrow()
+nycflights13::planes %>% nrow()
+nycflights13::weather %>% nrow()
 ```
 
 ### Итого:
@@ -57,11 +57,11 @@ glimpse(nycflights13::weather)
 ### Узнать сколько столбцов в каждом датафрейме
 
 ```{r}
-glimpse(nycflights13::airlines)
-glimpse(nycflights13::airports)
-glimpse(nycflights13::flights)
-glimpse(nycflights13::planes)
-glimpse(nycflights13::weather)
+nycflights13::airlanes %>% ncol()
+nycflights13::airports %>% ncol()
+nycflights13::flights %>% ncol()
+nycflights13::planes %>% ncol()
+nycflights13::weather %>% ncol()
 ```
 
 ### Итого:
