@@ -1,18 +1,16 @@
----
-title: "Лабораторная работа №2"
-author: Шабанов Р.В.
-format:
-    md:
-        output-file: readme.md
-    
-editor: visual
----
+Лабораторная работа №2
+================
+Шабанов Р.В.
 
 ## Цель Работы
 
-1.  Зекрепить практические навыки использования языка программирования R для обработки данных
-2.  Закрепить знания основных функций обработки данных экосистемы tidyverse языка R
-3.  Развить пркатические навыки использования функций обработки данных пакета dplyr -- функции select(), filter(), mutate(), arrange(), group_by()
+1.  Зекрепить практические навыки использования языка программирования R
+    для обработки данных
+2.  Закрепить знания основных функций обработки данных экосистемы
+    tidyverse языка R
+3.  Развить пркатические навыки использования функций обработки данных
+    пакета dplyr – функции select(), filter(), mutate(), arrange(),
+    group_by()
 
 ## Ход работы
 
@@ -28,15 +26,51 @@ editor: visual
 
 ### Узнать сколько строк в каждом датафрейме
 
-```{r}
+``` r
 library('nycflights13')
 library('dplyr')
+```
+
+
+    Присоединяю пакет: 'dplyr'
+
+    Следующие объекты скрыты от 'package:stats':
+
+        filter, lag
+
+    Следующие объекты скрыты от 'package:base':
+
+        intersect, setdiff, setequal, union
+
+``` r
 nycflights13::airlines %>% nrow()
+```
+
+    [1] 16
+
+``` r
 nycflights13::airports %>% nrow()
+```
+
+    [1] 1458
+
+``` r
 nycflights13::flights %>% nrow()
+```
+
+    [1] 336776
+
+``` r
 nycflights13::planes %>% nrow()
+```
+
+    [1] 3322
+
+``` r
 nycflights13::weather %>% nrow()
 ```
+
+    [1] 26115
 
 ### Итого:
 
@@ -54,13 +88,35 @@ nycflights13::weather %>% nrow()
 
 ### Узнать сколько столбцов в каждом датафрейме
 
-```{r}
+``` r
 nycflights13::airlines %>% ncol()
+```
+
+    [1] 2
+
+``` r
 nycflights13::airports %>% ncol()
+```
+
+    [1] 8
+
+``` r
 nycflights13::flights %>% ncol()
+```
+
+    [1] 19
+
+``` r
 nycflights13::planes %>% ncol()
+```
+
+    [1] 9
+
+``` r
 nycflights13::weather %>% ncol()
 ```
+
+    [1] 15
 
 ### Итого:
 
@@ -84,9 +140,12 @@ nycflights13::weather %>% ncol()
 
 ### Сколько компаний-перевозчиков (carrier) учитывают эти наборы данных (представлено в наборах данных)?
 
-```{r}
+``` r
 nycflights13::airlines$carrier
 ```
+
+     [1] "9E" "AA" "AS" "B6" "DL" "EV" "F9" "FL" "HA" "MQ" "OO" "UA" "US" "VX" "WN"
+    [16] "YV"
 
 ### Ответ - 16
 
@@ -94,10 +153,15 @@ nycflights13::airlines$carrier
 
 ### Сколько рейсов принял аэропорт John F Kennedy Intl в мае?
 
-```{r}
+``` r
 z <- filter(flights, month == 5 & origin == 'JFK')
 count(z)
 ```
+
+    # A tibble: 1 × 1
+          n
+      <int>
+    1  9397
 
 ### Ответ - 9397
 
@@ -109,7 +173,7 @@ count(z)
 
 ### Какой аэропорт самый высокогорный (находится выше всех над уровнем моря)?
 
-```{r}
+``` r
 a <- filter(weather, pressure != 'NA')
 b <- max(a$pressure)
 c <- filter(weather, pressure == b)
@@ -117,18 +181,29 @@ d <- select(c,origin)
 d
 ```
 
+    # A tibble: 2 × 1
+      origin
+      <chr> 
+    1 JFK   
+    2 JFK   
+
 Ответ: Аэропорт John F Kennedy Intl
 
 ## Задание 9
 
 ### Какие бортовые номера у самых старых самолетов?
 
-```{r}
+``` r
 a <- filter(planes, year != 'NA')
 b <- min(a$year)
 c <- filter(planes, year == b)
 select (c, tailnum)
 ```
+
+    # A tibble: 1 × 1
+      tailnum
+      <chr>  
+    1 N381AA 
 
 ### Ответ: Бортовой номер самого старого самолета - N381AA
 
@@ -136,12 +211,15 @@ select (c, tailnum)
 
 ### Какая средняя температура воздуха была в сентябре в аэропорту John F Kennedy Intl (в градусах Цельсия)?
 
-```{r}
+``` r
 a <- filter(weather, month == 9 , origin == 'JFK', temp != 'NA')
 b <- summarize(a, delay = mean(temp, na.rm = TRUE ))
 c <- 5/9*(b-32)
 c
 ```
+
+         delay
+    1 19.38764
 
 ### Ответ: 19.38764
 
@@ -149,7 +227,7 @@ c
 
 ### Самолеты какой авиакомпании совершили больше всего вылетов в июне?
 
-```{r}
+``` r
 a <- filter(flights, month == 6, carrier != 'NA', month != 'NA')
 b <- group_by(a, carrier)
 c <- count(b, carrier)
@@ -158,13 +236,18 @@ f <- filter(airlines, carrier == d$carrier)
 f
 ```
 
+    # A tibble: 1 × 2
+      carrier name                 
+      <chr>   <chr>                
+    1 UA      United Air Lines Inc.
+
 ### Ответ: Аваикомпании United Air Lines Inc.
 
 ## Задание 12
 
 ### Самолеты какой авиакомпании задерживались чаще других в 2013 году?
 
-```{r}
+``` r
 a <- filter(flights, year == 2013, dep_delay != 'NA', dep_delay > 0)
 b <- group_by(a,carrier)
 c <- count(b,carrier)
@@ -173,8 +256,14 @@ f <- filter(airlines, carrier == d$carrier)
 f
 ```
 
+    # A tibble: 1 × 2
+      carrier name                 
+      <chr>   <chr>                
+    1 UA      United Air Lines Inc.
+
 ### Ответ: Аваикомпании United Air Lines Inc.
 
 ## Вывод
 
-Научился пользоваться на практике функциями обработки данных пакета dplyr
+Научился пользоваться на практике функциями обработки данных пакета
+dplyr
