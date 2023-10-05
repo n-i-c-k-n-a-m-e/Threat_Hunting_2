@@ -169,6 +169,16 @@ count(z)
 
 ### Какой самый северный аэропорт?
 
+``` r
+a <- max(nycflights13::airports$lat, na.rm = TRUE)
+nycflights13::airports %>% select(name,lat) %>% filter(lat==a)
+```
+
+    # A tibble: 1 × 2
+      name                      lat
+      <chr>                   <dbl>
+    1 Dillant Hopkins Airport  72.3
+
 ## Задание 8
 
 ### Какой аэропорт самый высокогорный (находится выше всех над уровнем моря)?
@@ -248,7 +258,7 @@ f
 ### Самолеты какой авиакомпании задерживались чаще других в 2013 году?
 
 ``` r
-a <- filter(flights, year == 2013, dep_delay != 'NA', dep_delay > 0)
+a <- filter(flights, year == 2013, dep_delay != 'NA', arr_delay != 'NA', arr_delay > 0, dep_delay > 0)
 b <- group_by(a,carrier)
 c <- count(b,carrier)
 d <- filter(c, n == max(c$n))
@@ -257,9 +267,9 @@ f
 ```
 
     # A tibble: 1 × 2
-      carrier name                 
-      <chr>   <chr>                
-    1 UA      United Air Lines Inc.
+      carrier name                    
+      <chr>   <chr>                   
+    1 EV      ExpressJet Airlines Inc.
 
 ### Ответ: Аваикомпании United Air Lines Inc.
 
