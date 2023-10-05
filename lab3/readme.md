@@ -1,4 +1,4 @@
-Лабораторная работа №2
+Лабораторная работа №3
 ================
 Шабанов Р.В.
 
@@ -271,7 +271,7 @@ f
       <chr>   <chr>                   
     1 EV      ExpressJet Airlines Inc.
 
-### Ответ: Аваикомпании United Air Lines Inc.
+### Ответ: Аваикомпании ExpressJet Airlines Inc.
 
 ## Вывод
 

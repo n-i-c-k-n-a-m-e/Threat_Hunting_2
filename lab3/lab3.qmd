@@ -1,5 +1,5 @@
 ---
-title: "Лабораторная работа №2"
+title: "Лабораторная работа №3"
 author: Шабанов Р.В.
 format:
     md:
@@ -178,7 +178,7 @@ f <- filter(airlines, carrier == d$carrier)
 f
 ```
 
-### Ответ: Аваикомпании United Air Lines Inc.
+### Ответ: Аваикомпании ExpressJet Airlines Inc.
 
 ## Вывод
 
