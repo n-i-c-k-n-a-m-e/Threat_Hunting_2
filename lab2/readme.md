@@ -145,32 +145,97 @@ a$height
 ### Подсчитать ИМТ (индекс массы тела) для всех персонажей. ИМТ подсчитать по формуле 𝐼 = 𝑚ℎ2 , где 𝑚– масса (weight), а ℎ – рост (height).
 
 ``` r
-a<-filter(starwars, height != 'NA', mass != 'NA')
-a$mass*a$height^2
+a<-filter(starwars, name != 'NA', height != 'NA', mass != 'NA')
+b <- data.frame (a$name,a$mass*(a$height^2))
+b
 ```
 
-     [1]  2277968  2091675   294912  5549344  1102500  3802080  2041875   301088
-     [9]  2813076  2550548  2968896  5822208  2592000  2214746 41588750  2225300
-    [17]  3564000    74052  2167500  2618840  5600000  4079300  2474991  2419375
-    [25]  2689200   154880  1740800  3315161  3283290  2535456  4114432   501760
-    [33]  2450000  1742620   397620  1726985  2968896  3214728  3342192  1692800
-    [41]  2827520  2909125  2679120  1624180  1377800  2979920  2645631  1552320
-    [49]  3998808  4614808    93615  1787952  1805988  7418304  7446816  2792176
-    [57]  1520832  3394880  1225125
+                      a.name a.mass....a.height.2.
+    1         Luke Skywalker               2277968
+    2                  C-3PO               2091675
+    3                  R2-D2                294912
+    4            Darth Vader               5549344
+    5            Leia Organa               1102500
+    6              Owen Lars               3802080
+    7     Beru Whitesun lars               2041875
+    8                  R5-D4                301088
+    9      Biggs Darklighter               2813076
+    10        Obi-Wan Kenobi               2550548
+    11      Anakin Skywalker               2968896
+    12             Chewbacca               5822208
+    13              Han Solo               2592000
+    14                Greedo               2214746
+    15 Jabba Desilijic Tiure              41588750
+    16        Wedge Antilles               2225300
+    17      Jek Tono Porkins               3564000
+    18                  Yoda                 74052
+    19             Palpatine               2167500
+    20             Boba Fett               2618840
+    21                 IG-88               5600000
+    22                 Bossk               4079300
+    23      Lando Calrissian               2474991
+    24                 Lobot               2419375
+    25                Ackbar               2689200
+    26 Wicket Systri Warrick                154880
+    27             Nien Nunb               1740800
+    28          Qui-Gon Jinn               3315161
+    29           Nute Gunray               3283290
+    30         Jar Jar Binks               2535456
+    31          Roos Tarpals               4114432
+    32               Sebulba                501760
+    33            Darth Maul               2450000
+    34           Ayla Secura               1742620
+    35              Dud Bolt                397620
+    36        Ben Quadinaros               1726985
+    37            Mace Windu               2968896
+    38          Ki-Adi-Mundi               3214728
+    39             Kit Fisto               3342192
+    40            Adi Gallia               1692800
+    41              Plo Koon               2827520
+    42          Gregar Typho               2909125
+    43     Poggle the Lesser               2679120
+    44       Luminara Unduli               1624180
+    45         Barriss Offee               1377800
+    46                 Dooku               2979920
+    47            Jango Fett               2645631
+    48            Zam Wesell               1552320
+    49       Dexter Jettster               3998808
+    50               Lama Su               4614808
+    51         Ratts Tyerell                 93615
+    52            Wat Tambor               1787952
+    53              Shaak Ti               1805988
+    54              Grievous               7418304
+    55               Tarfful               7446816
+    56       Raymus Antilles               2792176
+    57             Sly Moore               1520832
+    58            Tion Medon               3394880
+    59         Padmé Amidala               1225125
 
 ## Задание 8
 
 ### Найти 10 самых “вытянутых” персонажей. “Вытянутость” оценить по отношению массы (mass) к росту (height) персонажей
 
 ``` r
-a<-filter(starwars, height != 'NA', mass != 'NA')
-b <- a$mass/a$height
-c <- sort(b, decreasing = TRUE)
-c[1:10]
+a<-filter(starwars, name != 'NA', height != 'NA', mass != 'NA')
+b <- data.frame(a$name, a$mass/a$height)
+c <- arrange(b, desc(a$mass/a$height))
+##c <- sort(b, decreasing = TRUE)
+top_n(c,10)
 ```
 
-     [1] 7.7600000 0.7361111 0.7000000 0.6741573 0.6732673 0.6111111 0.5947368
-     [8] 0.5811966 0.5151515 0.4912281
+    Selecting by a.mass.a.height
+
+                      a.name a.mass.a.height
+    1  Jabba Desilijic Tiure       7.7600000
+    2               Grievous       0.7361111
+    3                  IG-88       0.7000000
+    4              Owen Lars       0.6741573
+    5            Darth Vader       0.6732673
+    6       Jek Tono Porkins       0.6111111
+    7                  Bossk       0.5947368
+    8                Tarfful       0.5811966
+    9        Dexter Jettster       0.5151515
+    10             Chewbacca       0.4912281
 
 ## Задание 9
 
@@ -212,7 +277,28 @@ a <-filter(starwars, eye_color != 'NA')
 b <- group_by(a, eye_color)
 c <- count(b,eye_color)
 d <- arrange(c,desc(n))
+d
 ```
+
+    # A tibble: 15 × 2
+    # Groups:   eye_color [15]
+       eye_color         n
+       <chr>         <int>
+     1 brown            21
+     2 blue             19
+     3 yellow           11
+     4 black            10
+     5 orange            8
+     6 red               5
+     7 hazel             3
+     8 unknown           3
+     9 blue-gray         1
+    10 dark              1
+    11 gold              1
+    12 green, yellow     1
+    13 pink              1
+    14 red, blue         1
+    15 white             1
 
 ### Ответ: Brown(21)
 
