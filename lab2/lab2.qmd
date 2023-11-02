@@ -51,7 +51,7 @@ glimpse(starwars)
 
 ### Cколько уникальных рас персонажей (species) представлено в данных?
 
-```{r} 
+```{r}
 starwars %>% group_by(species) %>% summarize('species' = n()) %>% nrow()
 ```
 
@@ -111,7 +111,7 @@ top_n(c,10)
 a <- filter(starwars, species != 'NA', birth_year != 'NA')
 b <- select(a, species, birth_year)
 c <- group_by(b,species)
-d <- summarize(c, delay = mean(birth_year, na.rm = TRUE))
+d <- summarize(c, avg_age = mean(birth_year, na.rm = TRUE))
 d
 
 ```
@@ -138,7 +138,7 @@ d
 a <- filter(starwars, name != 'NA', species != 'NA')
 b <- select(a, name, species)
 c <- group_by(b, species)
-d <- summarize(c, delay = mean(nchar(name)))
+d <- summarize(c, AvgLenName = mean(nchar(name)))
 d
 ```
 

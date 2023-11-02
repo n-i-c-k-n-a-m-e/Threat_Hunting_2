@@ -224,28 +224,28 @@ top_n(c,10)
 a <- filter(starwars, species != 'NA', birth_year != 'NA')
 b <- select(a, species, birth_year)
 c <- group_by(b,species)
-d <- summarize(c, delay = mean(birth_year, na.rm = TRUE))
+d <- summarize(c, avg_age = mean(birth_year, na.rm = TRUE))
 d
 ```
 
     # A tibble: 15 × 2
-       species        delay
-       <chr>          <dbl>
-     1 Cerean          92  
-     2 Droid           53.3
-     3 Ewok             8  
-     4 Gungan          52  
-     5 Human           53.4
-     6 Hutt           600  
-     7 Kel Dor         22  
-     8 Mirialan        49  
-     9 Mon Calamari    41  
-    10 Rodian          44  
-    11 Trandoshan      53  
-    12 Twi'lek         48  
-    13 Wookiee        200  
-    14 Yoda's species 896  
-    15 Zabrak          54  
+       species        avg_age
+       <chr>            <dbl>
+     1 Cerean            92  
+     2 Droid             53.3
+     3 Ewok               8  
+     4 Gungan            52  
+     5 Human             53.4
+     6 Hutt             600  
+     7 Kel Dor           22  
+     8 Mirialan          49  
+     9 Mon Calamari      41  
+    10 Rodian            44  
+    11 Trandoshan        53  
+    12 Twi'lek           48  
+    13 Wookiee          200  
+    14 Yoda's species   896  
+    15 Zabrak            54  
 
 ## Задание 10
 
@@ -289,23 +289,23 @@ d
 a <- filter(starwars, name != 'NA', species != 'NA')
 b <- select(a, name, species)
 c <- group_by(b, species)
-d <- summarize(c, delay = mean(nchar(name)))
+d <- summarize(c, AvgLenName = mean(nchar(name)))
 d
 ```
 
     # A tibble: 37 × 2
-       species   delay
-       <chr>     <dbl>
-     1 Aleena    13   
-     2 Besalisk  15   
-     3 Cerean    12   
-     4 Chagrian  10   
-     5 Clawdite  10   
-     6 Droid      4.83
-     7 Dug        7   
-     8 Ewok      21   
-     9 Geonosian 17   
-    10 Gungan    11.7 
+       species   AvgLenName
+       <chr>          <dbl>
+     1 Aleena         13   
+     2 Besalisk       15   
+     3 Cerean         12   
+     4 Chagrian       10   
+     5 Clawdite       10   
+     6 Droid           4.83
+     7 Dug             7   
+     8 Ewok           21   
+     9 Geonosian      17   
+    10 Gungan         11.7 
     # ℹ 27 more rows
 
 ## Вывод
