@@ -51,11 +51,11 @@ glimpse(starwars)
 
 ### Cколько уникальных рас персонажей (species) представлено в данных?
 
-```{r}
-starwars$species
+```{r} 
+starwars %>% group_by(species) %>% summarize('species' = n()) %>% nrow()
 ```
 
-### Ответ: 85
+### Ответ: 38
 
 ## Задание 5
 

@@ -85,33 +85,12 @@ glimpse(starwars)
 ### Cколько уникальных рас персонажей (species) представлено в данных?
 
 ``` r
-starwars$species
+starwars %>% group_by(species) %>% summarize('species' = n()) %>% nrow()
 ```
 
-     [1] "Human"          "Droid"          "Droid"          "Human"         
-     [5] "Human"          "Human"          "Human"          "Droid"         
-     [9] "Human"          "Human"          "Human"          "Human"         
-    [13] "Wookiee"        "Human"          "Rodian"         "Hutt"          
-    [17] "Human"          "Human"          "Yoda's species" "Human"         
-    [21] "Human"          "Droid"          "Trandoshan"     "Human"         
-    [25] "Human"          "Mon Calamari"   "Human"          "Human"         
-    [29] "Ewok"           "Sullustan"      "Human"          "Neimodian"     
-    [33] "Human"          "Gungan"         "Gungan"         "Gungan"        
-    [37] NA               "Toydarian"      "Dug"            NA              
-    [41] "Human"          "Zabrak"         "Twi'lek"        "Twi'lek"       
-    [45] "Vulptereen"     "Xexto"          "Toong"          "Human"         
-    [49] "Cerean"         "Nautolan"       "Zabrak"         "Tholothian"    
-    [53] "Iktotchi"       "Quermian"       "Kel Dor"        "Chagrian"      
-    [57] "Human"          "Human"          "Human"          "Geonosian"     
-    [61] "Mirialan"       "Mirialan"       "Human"          "Human"         
-    [65] "Human"          "Human"          "Clawdite"       "Besalisk"      
-    [69] "Kaminoan"       "Kaminoan"       "Human"          "Aleena"        
-    [73] "Droid"          "Skakoan"        "Muun"           "Togruta"       
-    [77] "Kaleesh"        "Wookiee"        "Human"          NA              
-    [81] "Pau'an"         "Human"          "Human"          "Human"         
-    [85] "Droid"          NA               "Human"         
+    [1] 38
 
-### Ответ: 85
+### Ответ: 38
 
 ## Задание 5
 
