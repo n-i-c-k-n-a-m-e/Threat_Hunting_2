@@ -920,7 +920,7 @@ dat2 %>% select(Station.MAC) %>% filter(!Station.MAC %in% grep(":",dat2$Station.
 ### Кластеризовать запросы от устройств к точкам доступа по их именам.Определить время появления устройства в зоне радиовидимости и времявыхода его из нее.
 
 ``` r
-dat2 %>% filter(Probed.ESSIDs != '<NA>') %>% group_by(Station.MAC, Probed.ESSIDs) %>%  summarise("first" = min(First.time.seen), "last" = max(Last.time.seen), Power)
+dat2 %>% filter(Probed.ESSIDs != '<NA>') %>% group_by(Station.MAC, Probed.ESSIDs) %>%  summarise("first-time" = min(First.time.seen), "last-time" = max(Last.time.seen), Power)
 ```
 
     `summarise()` has grouped output by 'Station.MAC'. You can override using the
@@ -928,7 +928,7 @@ dat2 %>% filter(Probed.ESSIDs != '<NA>') %>% group_by(Station.MAC, Probed.ESSIDs
 
     # A tibble: 1,477 × 5
     # Groups:   Station.MAC [1,477]
-       Station.MAC       Probed.ESSIDs first               last                Power
+       Station.MAC       Probed.ESSIDs `first-time`        `last-time`         Power
        <chr>             <chr>         <dttm>              <dttm>              <chr>
      1 00:90:4C:E6:54:54 Redmi         2023-07-28 09:16:59 2023-07-28 10:21:15 " -6…
      2 00:95:69:E7:7C:ED nvripcsuite   2023-07-28 09:13:11 2023-07-28 11:56:13 " -5…
@@ -947,11 +947,11 @@ dat2 %>% filter(Probed.ESSIDs != '<NA>') %>% group_by(Station.MAC, Probed.ESSIDs
 ### Оценить стабильность уровня сигнала внури кластера во времени. Выявить наиболее стабильный кластер
 
 ``` r
-dat2 %>% filter(!is.na(Probed.ESSIDs),!is.na(Power) ) %>% group_by(Station.MAC) %>%  summarise("first" = min(First.time.seen), "last" = max(Last.time.seen), Power) %>% arrange(desc(Power)) %>% head(1)
+dat2 %>% filter(!is.na(Probed.ESSIDs),!is.na(Power) ) %>% group_by(Station.MAC) %>%  summarise("first-time" = min(First.time.seen), "last-time" = max(Last.time.seen), Power) %>% arrange(desc(Power)) %>% head(1)
 ```
 
     # A tibble: 1 × 4
-      Station.MAC       first               last                Power 
+      Station.MAC       `first-time`        `last-time`         Power 
       <chr>             <dttm>              <dttm>              <chr> 
     1 8A:45:77:F9:7F:F4 2023-07-28 10:00:55 2023-07-28 10:00:55 " -89"
 
