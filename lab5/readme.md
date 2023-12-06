@@ -69,6 +69,7 @@ dat1$Last.time.seen <- as.POSIXct(dat1$Last.time.seen, format = "%Y-%m-%d %H:%M:
 dat1$First.time.seen <- as.POSIXct(dat1$First.time.seen, format = "%Y-%m-%d %H:%M:%S")
 dat2$Last.time.seen <- as.POSIXct(dat2$Last.time.seen, format = "%Y-%m-%d %H:%M:%S")
 dat2$First.time.seen <- as.POSIXct(dat2$First.time.seen, format = "%Y-%m-%d %H:%M:%S")
+dat2 <- dat2 %>% mutate_at(vars(Station.MAC, BSSID, Probed.ESSIDs), trimws) %>% mutate_at(vars(Station.MAC, BSSID, Probed.ESSIDs), na_if, "")
 ```
 
 ## Задание 3
@@ -108,7 +109,7 @@ dat2 %>% glimpse()
     $ Last.time.seen  <dttm> 2023-07-28 10:59:44, 2023-07-28 09:13:03, 2023-07-28 …
     $ Power           <chr> " -33", " -65", " -39", " -61", " -53", " -43", " -31"…
     $ X..packets      <chr> "      858", "        4", "      432", "      958", " …
-    $ BSSID           <chr> " BE:F1:71:D5:17:8B", " (not associated) ", " BE:F1:71…
+    $ BSSID           <chr> "BE:F1:71:D5:17:8B", "(not associated)", "BE:F1:71:D6:…
     $ Probed.ESSIDs   <chr> "C322U13 3965", "IT2 Wireless", "C322U21 0566", "C322U…
 
 ## Анализ
@@ -918,9 +919,41 @@ dat2 %>% select(Station.MAC) %>% filter(!Station.MAC %in% grep(":",dat2$Station.
 
 ### Кластеризовать запросы от устройств к точкам доступа по их именам.Определить время появления устройства в зоне радиовидимости и времявыхода его из нее.
 
+``` r
+dat2 %>% filter(Probed.ESSIDs != '<NA>') %>% group_by(Station.MAC, Probed.ESSIDs) %>%  summarise("first" = min(First.time.seen), "last" = max(Last.time.seen), Power)
+```
+
+    `summarise()` has grouped output by 'Station.MAC'. You can override using the
+    `.groups` argument.
+
+    # A tibble: 1,477 × 5
+    # Groups:   Station.MAC [1,477]
+       Station.MAC       Probed.ESSIDs first               last                Power
+       <chr>             <chr>         <dttm>              <dttm>              <chr>
+     1 00:90:4C:E6:54:54 Redmi         2023-07-28 09:16:59 2023-07-28 10:21:15 " -6…
+     2 00:95:69:E7:7C:ED nvripcsuite   2023-07-28 09:13:11 2023-07-28 11:56:13 " -5…
+     3 00:95:69:E7:7D:21 nvripcsuite   2023-07-28 09:13:15 2023-07-28 11:56:17 " -3…
+     4 00:95:69:E7:7F:35 nvripcsuite   2023-07-28 09:13:11 2023-07-28 11:56:07 " -6…
+     5 00:F4:8D:F7:C5:19 Redmi 12      2023-07-28 10:45:04 2023-07-28 11:43:26 " -7…
+     6 02:00:00:00:00:00 xt3 w64dtgv5… 2023-07-28 09:54:40 2023-07-28 11:55:36 " -6…
+     7 02:06:2B:A5:0C:31 Avenue611     2023-07-28 09:55:12 2023-07-28 09:55:12 " -6…
+     8 02:1D:0F:A4:94:74 iPhone (Дима… 2023-07-28 09:57:08 2023-07-28 09:57:08 " -6…
+     9 02:32:DC:56:5C:82 Timo Resort   2023-07-28 10:58:23 2023-07-28 10:58:24 " -8…
+    10 02:35:E9:C2:44:5F iPhone (Макс… 2023-07-28 10:00:55 2023-07-28 10:00:55 " -8…
+    # ℹ 1,467 more rows
+
 ## Задание 4
 
 ### Оценить стабильность уровня сигнала внури кластера во времени. Выявить наиболее стабильный кластер
+
+``` r
+dat2 %>% filter(!is.na(Probed.ESSIDs),!is.na(Power) ) %>% group_by(Station.MAC) %>%  summarise("first" = min(First.time.seen), "last" = max(Last.time.seen), Power) %>% arrange(desc(Power)) %>% head(1)
+```
+
+    # A tibble: 1 × 4
+      Station.MAC       first               last                Power 
+      <chr>             <dttm>              <dttm>              <chr> 
+    1 8A:45:77:F9:7F:F4 2023-07-28 10:00:55 2023-07-28 10:00:55 " -89"
 
 ## Вывод
 
