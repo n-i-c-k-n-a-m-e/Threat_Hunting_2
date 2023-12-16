@@ -53,6 +53,10 @@ library('tidyverse')
 ### Импортируйте данные.
 
 ``` r
+fulldat <- read.csv(file = "mir.csv-01.csv")
+```
+
+``` r
 dat1 <-read.csv(file = "mir.csv-01.csv",nrows = 167)
 ```
 
@@ -947,7 +951,7 @@ dat2 %>% filter(Probed.ESSIDs != '<NA>') %>% group_by(Station.MAC, Probed.ESSIDs
 ### Оценить стабильность уровня сигнала внури кластера во времени. Выявить наиболее стабильный кластер
 
 ``` r
-dat2 %>% filter(!is.na(Probed.ESSIDs),!is.na(Power) ) %>% group_by(Station.MAC) %>%  summarise("first-time" = min(First.time.seen), "last-time" = max(Last.time.seen), Power) %>% arrange(desc(Power)) %>% head(1)
+dat2 %>% filter(Probed.ESSIDs != '<NA>',Power != '<NA>' ) %>% group_by(Station.MAC) %>%  summarise("first-time" = min(First.time.seen), "last-time" = max(Last.time.seen), Power) %>% arrange(desc(Power)) %>% head(1)
 ```
 
     # A tibble: 1 × 4

@@ -10,13 +10,10 @@ editor: visual
 
 ## Цель Работы
 
-1. Получить знания о методах исследования радиоэлектронной обстановки.
-2. Составить представление о механизмах работы Wi-Fi сетей на канальном и
-сетевом уровне модели OSI.
-3. Зекрепить практические навыки использования языка программирования R для
-обработки данных
-4. Закрепить знания основных функций обработки данных экосистемы tidyverse
-языка R
+1.  Получить знания о методах исследования радиоэлектронной обстановки.
+2.  Составить представление о механизмах работы Wi-Fi сетей на канальном и сетевом уровне модели OSI.
+3.  Зекрепить практические навыки использования языка программирования R для обработки данных
+4.  Закрепить знания основных функций обработки данных экосистемы tidyverse языка R
 
 ## Задание Используя программный пакет dplyr языкампрограммирования R провести анализ журналов и ответить на вопросы.
 
@@ -28,9 +25,15 @@ editor: visual
 library('dplyr')
 library('tidyverse')
 ```
-## Задание 1 
+
+## Задание 1
 
 ### Импортируйте данные.
+```{r}
+fulldat <- read.csv(file = "mir.csv-01.csv")
+
+```
+
 ```{r}
 dat1 <-read.csv(file = "mir.csv-01.csv",nrows = 167)
 ```
@@ -40,26 +43,28 @@ dat2 <-read.csv(file = "mir.csv-01.csv",skip = 169)
 
 ```
 
-
 ## Задание 2
 
-### Привести датасеты в вид “аккуратных данных”, преобразовать типы столбцов всоответствии с типом данных
+### Привести датасеты в вид "аккуратных данных", преобразовать типы столбцов всоответствии с типом данных
+
 ```{r}
 dat1$Last.time.seen <- as.POSIXct(dat1$Last.time.seen, format = "%Y-%m-%d %H:%M:%S")
 dat1$First.time.seen <- as.POSIXct(dat1$First.time.seen, format = "%Y-%m-%d %H:%M:%S")
 dat2$Last.time.seen <- as.POSIXct(dat2$Last.time.seen, format = "%Y-%m-%d %H:%M:%S")
 dat2$First.time.seen <- as.POSIXct(dat2$First.time.seen, format = "%Y-%m-%d %H:%M:%S")
+dat2 <- dat2 %>% mutate_at(vars(Station.MAC, BSSID, Probed.ESSIDs), trimws) %>% mutate_at(vars(Station.MAC, BSSID, Probed.ESSIDs), na_if, "")
 
 ```
-
 
 ## Задание 3
 
 ### Просмотрите общую структуру данных с помощью функции glimpse()
+
 ```{r}
 dat1 %>% glimpse()
 
 ```
+
 ```{r}
 dat2 %>% glimpse()
 
@@ -71,26 +76,35 @@ dat2 %>% glimpse()
 
 ## Задание 1
 
-### Определить небезопасные точки доступа (без шифрования – OPN)
+### Определить небезопасные точки доступа (без шифрования -- OPN)
 
 ```{r}
 dat1 %>% filter(Privacy == ' OPN')
 
 ```
+
 ## Задание 2
 
-### Определить производителя для каждого обнаруженного устройства
+### E8:28:C1 Eltex Enterprise Ltd.
 
+### 00:25:00 Apple, Inc.
+
+### E0:D9:E3 Eltex Enterprise Ltd.
+
+### 00:26:99 Cisco Systems, Inc
+
+### 00:03:7A Taiyo Yuden Co., Ltd.
+
+### 00:03:7F Atheros Communications, Inc.
 
 ## Задание 3
 
 ### Выявить устройства, использующие последнюю версию протокола шифрования WPA3, и названия точек доступа, реализованных на этих устройствах
 
 ```{r}
-dat1 %>% select(BSSID,Privacy,ESSID) %>% filter(Privacy == 'WPA3')
+dat1 %>% select(BSSID,Privacy,ESSID) %>% filter(Privacy == ' WPA3 WPA2')
 
 ```
-### Таких устройств нет
 
 ## Задание 4
 
@@ -100,7 +114,7 @@ dat1 %>% select(BSSID,Privacy,ESSID) %>% filter(Privacy == 'WPA3')
 a <- difftime(dat1$Last.time.seen, dat1$First.time.seen, units = "secs")
 tdat1 <- dat1
 tdat1 <- cbind(tdat1,a)
-tdat1 %>% select(BSSID,ESSID, a) %>% arrange(desc(a))
+tdat1 %>% select(BSSID,ESSID, Last.time.seen,First.time.seen, a) %>% arrange(desc(a))
 ```
 
 ## Задание 5
@@ -125,21 +139,50 @@ dat1 %>% select(BSSID,ESSID,X..beacons) %>% arrange(desc(X..beacons))
 
 ### Определить производителя для каждого обнаруженного устройства
 
+### E8:28:C1 Eltex Enterprise Ltd.
+
+### 00:25:00 Apple, Inc.
+
+### 00:26:99 Cisco Systems, Inc
+
+### 0C:80:63 TP-LINK TECHNOLOGIES CO.,LTD.
+
+### 08:3A:2F Guangzhou Juan Intelligent Tech Joint Stock Co.,Ltd
+
+### 00:23:EB Cisco Systems, Inc
+
+### E0:D9:E3 Eltex Enterprise Ltd.
+
+### DC:09:4C HUAWEI TECHNOLOGIES CO.,LTD
+
+### 00:03:7F Atheros Communications, Inc.
+
+### 00:0D:97 Hitachi Energy USA Inc.
+
 ## Задание 2
 
 ### Обнаружить устройства, которые НЕ рандомизируют свой MAC адрес
 
 ```{r}
-dat2 %>% select(Station.MAC) %>% filter(!Station.MAC %in% grep(":",dat2$Station.MAC, value = TRUE))
-
+dat2 %>% select(Station.MAC) %>% filter(!Station.MAC %in% grep(":",dat2$Station.MAC, value = TRUE)) %>% unique()
 ```
+
 ## Задание 3
 
 ### Кластеризовать запросы от устройств к точкам доступа по их именам.Определить время появления устройства в зоне радиовидимости и времявыхода его из нее.
 
+```{r}
+dat2 %>% filter(Probed.ESSIDs != '<NA>') %>% group_by(Station.MAC, Probed.ESSIDs) %>%  summarise("first-time" = min(First.time.seen), "last-time" = max(Last.time.seen), Power)
+```
+
 ## Задание 4
 
 ### Оценить стабильность уровня сигнала внури кластера во времени. Выявить наиболее стабильный кластер
+
+```{r}
+dat2 %>% filter(Probed.ESSIDs != '<NA>',Power != '<NA>' ) %>% group_by(Station.MAC) %>%  summarise("first-time" = min(First.time.seen), "last-time" = max(Last.time.seen), Power) %>% arrange(desc(Power)) %>% head(1)
+
+```
 
 ## Вывод
 
