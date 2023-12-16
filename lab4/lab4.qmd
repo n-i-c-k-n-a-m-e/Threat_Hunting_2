@@ -16,13 +16,20 @@ editor: visual
 
 ## Ход работы
 
+## Подключение библиотек
+```{r}
+library('dplyr')
+```
+
+```{r}
+library('tidyverse')
+```
+
 ## Задание 1
 
 ### Импортируйте данные DNS
 
 ```{r}
-library('dplyr')
-library('tidyverse')
 dns <- read_tsv("dns.log")
 
 dns
@@ -40,13 +47,11 @@ names(dns) <- c("ts", "uid", "id_or_h", "or_p", "id_re_h", "re_p","proto", "tran
 
 ### Преобразуйте данные в столбцах в нужный формат
 
-### Наши данные уже и так в нужном формате
+### Наши данные уже и так в подходящем формате. Ниже описано два способа преобразование формата
 
-```{r}
 #transform(dns, ts = as.ts(ts))
 #dns$ts <- dns$ts %>% as.ts()
 
-```
 
 ## Задание 4
 
@@ -60,27 +65,33 @@ glimpse(dns)
 
 ### Сколько участников информационного обмена в сети Доброй Организации?
 
+### Если речь идет о кол-ве всевозможных пользователей за пк
+
 ```{r}
 select(dns,uid) %>% group_by(uid) %>% count() %>% nrow()
 
 ```
 
-Ответ: 162495
+
+### Если речь идет о количества самих пк:
+```{r}
+a <- dns %>% filter(id_or_h != 'NA', id_re_h != 'NA', id_or_h != id_re_h) %>% select(id_or_h) %>% unique() 
+b <-  dns %>% filter(id_or_h != 'NA', id_re_h != 'NA', id_re_h != id_or_h) %>% select(id_re_h) %>% unique()
+c <- a <- b
+c %>% count()
+```
 
 ## Задание 6
 
 ### Какое соотношение участников обмена внутри сети и участников обращений к внешним ресурсам?
 
 ```{r}
-#a <- filter(dns, query != '-',query == '(empty)') %>% group_by(uid) %>% count() %>% nrow()
 a <- filter(dns, qtype_name == 'A'| qtype_name == 'AA' | qtype_name =='AAA' | qtype_name == 'AAAA') %>% group_by(uid) %>% count() %>% nrow() 
 b <- filter(dns, qtype_name != 'A', qtype_name !='AA', qtype_name !='AAA', qtype_name !='AAAA') %>% group_by(uid) %>% count() %>% nrow()
-#b <- filter(dns, query !='-',query != '(empty)') %>% group_by(uid) %>% count() %>% nrow()
 b/a
 
 ```
 
-Ответ: 0.5084645
 
 ## Задание 7
 
@@ -102,12 +113,11 @@ top_dom
 
 ## Задание 9
 
-### Опеределите базовые статистические характеристики (функция summary()) интервала времени между последовательным обращениями к топ-10 доменам.
+### Определите базовые статистические характеристики (функция summary()) интервала времени между последовательным обращениями к топ-10 доменам.
 
 ```{r}
 
 summary(diff((dns %>% filter(tolower(query) %in% top_dom$query) %>% arrange(ts))$ts))
-#dns %>% filter(query !='-',ts !='NA') %>% select(query,mean(ts)) %>% group_by(query) %>% count() %>% arrange(desc(n)) %>% head(10)
 ```
 
 ## Задание 10
@@ -143,7 +153,7 @@ unique(t$id_or_h)%>% head()
 ### api.twitter.com - United States, San Francisco, Twitter inc
 
 ### api.facebook.com - Unites States, Menlo Park, Facebook inc
- 
+
 ## Вывод
 
-### Закрепил навыки исследования метаданных DNS файла 
+### Закрепил навыки исследования метаданных DNS файла

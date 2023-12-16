@@ -12,9 +12,7 @@
 
 ## Ход работы
 
-## Задание 1
-
-### Импортируйте данные DNS
+## Подключение библиотек
 
 ``` r
 library('dplyr')
@@ -40,11 +38,14 @@ library('tidyverse')
     ✔ ggplot2   3.4.4     ✔ stringr   1.5.0
     ✔ lubridate 1.9.3     ✔ tibble    3.2.1
     ✔ purrr     1.0.2     ✔ tidyr     1.3.0
-
     ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
     ✖ dplyr::filter() masks stats::filter()
     ✖ dplyr::lag()    masks stats::lag()
     ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+
+## Задание 1
+
+### Импортируйте данные DNS
 
 ``` r
 dns <- read_tsv("dns.log")
@@ -106,12 +107,10 @@ names(dns) <- c("ts", "uid", "id_or_h", "or_p", "id_re_h", "re_p","proto", "tran
 
 ### Преобразуйте данные в столбцах в нужный формат
 
-### Наши данные уже и так в нужном формате
+### Наши данные уже и так в подходящем формате. Ниже описано два способа преобразование формата
 
-``` r
-#transform(dns, ts = as.ts(ts))
-#dns$ts <- dns$ts %>% as.ts()
-```
+#transform(dns, ts = as.ts(ts)) #dns*t**s* \<  − *d**n**s*ts %\>%
+as.ts()
 
 ## Задание 4
 
@@ -151,29 +150,39 @@ glimpse(dns)
 
 ### Сколько участников информационного обмена в сети Доброй Организации?
 
+### Если речь идет о кол-ве всевозможных пользователей за пк
+
 ``` r
 select(dns,uid) %>% group_by(uid) %>% count() %>% nrow()
 ```
 
     [1] 162495
 
-Ответ: 162495
+### Если речь идет о количества самих пк:
+
+``` r
+a <- dns %>% filter(id_or_h != 'NA', id_re_h != 'NA', id_or_h != id_re_h) %>% select(id_or_h) %>% unique() 
+b <-  dns %>% filter(id_or_h != 'NA', id_re_h != 'NA', id_re_h != id_or_h) %>% select(id_re_h) %>% unique()
+c <- a <- b
+c %>% count()
+```
+
+    # A tibble: 1 × 1
+          n
+      <int>
+    1  1229
 
 ## Задание 6
 
 ### Какое соотношение участников обмена внутри сети и участников обращений к внешним ресурсам?
 
 ``` r
-#a <- filter(dns, query != '-',query == '(empty)') %>% group_by(uid) %>% count() %>% nrow()
 a <- filter(dns, qtype_name == 'A'| qtype_name == 'AA' | qtype_name =='AAA' | qtype_name == 'AAAA') %>% group_by(uid) %>% count() %>% nrow() 
 b <- filter(dns, qtype_name != 'A', qtype_name !='AA', qtype_name !='AAA', qtype_name !='AAAA') %>% group_by(uid) %>% count() %>% nrow()
-#b <- filter(dns, query !='-',query != '(empty)') %>% group_by(uid) %>% count() %>% nrow()
 b/a
 ```
 
     [1] 0.5084645
-
-Ответ: 0.5084645
 
 ## Задание 7
 
@@ -224,7 +233,7 @@ top_dom
 
 ## Задание 9
 
-### Опеределите базовые статистические характеристики (функция summary()) интервала времени между последовательным обращениями к топ-10 доменам.
+### Определите базовые статистические характеристики (функция summary()) интервала времени между последовательным обращениями к топ-10 доменам.
 
 ``` r
 summary(diff((dns %>% filter(tolower(query) %in% top_dom$query) %>% arrange(ts))$ts))
@@ -232,10 +241,6 @@ summary(diff((dns %>% filter(tolower(query) %in% top_dom$query) %>% arrange(ts))
 
         Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
         0.00     0.00     0.00     1.08     0.31 49924.53 
-
-``` r
-#dns %>% filter(query !='-',ts !='NA') %>% select(query,mean(ts)) %>% group_by(query) %>% count() %>% arrange(desc(n)) %>% head(10)
-```
 
 ## Задание 10
 
