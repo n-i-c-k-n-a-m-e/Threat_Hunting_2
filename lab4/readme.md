@@ -109,8 +109,9 @@ names(dns) <- c("ts", "uid", "id_or_h", "or_p", "id_re_h", "re_p","proto", "tran
 
 ### Наши данные уже и так в подходящем формате. Ниже описано два способа преобразование формата
 
-#transform(dns, ts = as.ts(ts)) #dns*t**s* \<  − *d**n**s*ts %\>%
-as.ts()
+### transform(dns, ts = as.ts(ts))
+
+### dns*t**s* \<  − *d**n**s*ts %\>% as.ts()
 
 ## Задание 4
 
