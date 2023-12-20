@@ -53,15 +53,15 @@ library('tidyverse')
 ### Импортируйте данные.
 
 ``` r
-fulldat <- read.csv(file = "mir.csv-01.csv")
+fulldat <- read.csv("mir.csv-01.csv")
 ```
 
 ``` r
-dat1 <-read.csv(file = "mir.csv-01.csv",nrows = 167)
+dat1 <- read.csv(file = "mir.csv-01.csv",nrows=167)
 ```
 
 ``` r
-dat2 <-read.csv(file = "mir.csv-01.csv",skip = 169)
+dat2 <- read.csv(file = "mir.csv-01.csv",skip=169)
 ```
 
 ## Задание 2
