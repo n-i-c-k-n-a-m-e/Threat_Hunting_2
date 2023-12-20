@@ -111,8 +111,6 @@ names(dns) <- c("ts", "uid", "id_or_h", "or_p", "id_re_h", "re_p","proto", "tran
 
 ### transform(dns, ts = as.ts(ts))
 
-### dns*t**s* \<  − *d**n**s*ts %\>% as.ts()
-
 ## Задание 4
 
 ### Просмотрите общую структуру данных с помощью функции glimpse()
