@@ -23,7 +23,32 @@
 ### Импортируйте данные в R
 
 ``` r
-jsdf <- jsonlite::stream_in(file('./caldera_attack_evals_round1_day1_2019-10-20201108.json'))
+library('xml2')
+library('rvest')
+library('dplyr')
+```
+
+
+    Присоединяю пакет: 'dplyr'
+
+    Следующие объекты скрыты от 'package:stats':
+
+        filter, lag
+
+    Следующие объекты скрыты от 'package:base':
+
+        intersect, setdiff, setequal, union
+
+``` r
+library('jsonlite')
+library('tidyr')
+
+url <- "https://storage.yandexcloud.net/iamcth-data/dataset.tar.gz"
+download.file(url, destfile = tf <- tempfile(fileext = ".tar.gz"), mode = "wb")
+temp_dir <- tempdir()
+untar(tf, exdir = temp_dir)
+json_files <- list.files(temp_dir, pattern="\\.json$", full.names = TRUE, recursive = TRUE)
+jsdf <- stream_in(file(json_files))
 ```
 
     opening file input connection.
@@ -236,23 +261,6 @@ jsdf <- jsonlite::stream_in(file('./caldera_attack_evals_round1_day1_2019-10-202
      Imported 101904 records. Simplifying...
 
     closing file input connection.
-
-``` r
-library('xml2')
-library('rvest')
-library('dplyr')
-```
-
-
-    Присоединяю пакет: 'dplyr'
-
-    Следующие объекты скрыты от 'package:stats':
-
-        filter, lag
-
-    Следующие объекты скрыты от 'package:base':
-
-        intersect, setdiff, setequal, union
 
 ``` r
 webpage_url <- "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/appendix-l--events-to-monitor"
